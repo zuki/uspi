@@ -448,7 +448,7 @@ boolean LAN7800DeviceConfigure (TUSBFunction *pUSBFunction)
 
 	// enable RX
 	if (   !LAN7800DeviceReadWriteReg (pThis, MAC_RX,
-					   (MAX_RX_FRAME_SIZE << MAC_RX_MAX_SIZE_SHIFT) | MAC_RX_RXEN,
+					   (MAX_RX_FRAME_SIZE << MAC_RX_MAX_SIZE_SHIFT) | MAC_RX_RXEN | MAC_RX_VLAN_FSE,
 					   ~MAC_RX_MAX_SIZE_MASK)
 	    || !LAN7800DeviceReadWriteReg (pThis, FCT_RX_CTL, FCT_RX_CTL_EN, ~0U))
 
