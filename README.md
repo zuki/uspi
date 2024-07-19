@@ -5,103 +5,132 @@ USPi
 
 > If you read this file in an editor you should switch line wrapping on.
 
-Overview
+概要
 --------
 
-USPi is a bare metal USB driver for the Raspberry Pi written in C. It was ported from the Circle USB library. Using C allows it to be used from bare metal C code for the Raspberry Pi. Like the Circle USB library it supports control (synchronous), bulk and interrupt (synchronous and asynchronous) transfers. Function drivers are available for USB keyboards, mice, MIDI instruments, gamepads, mass storage devices (e.g. USB flash devices) and the on-board Ethernet controller. USPi should run on all existing Raspberry Pi models.
+USPiは、Cで書かれたRaspberry Pi用のベアメタルUSBドライバです。Circle USB libraryを
+移植したものです。C言語を使用したことで、Raspberry PiのベアメタルCコードから使用
+することができます。Circle USBライブラリと同様にコントロール（同期）、バルク、
+インタラプト（同期、非同期）転送をサポートしています。USBキーボード、マウス、MIDI楽器、
+ゲームパッド、大容量記憶装置（USBメモリなど）とオンボードEthernetコントローラ用の
+関数ドライバが利用できます。USPiは既存のすべてのRaspberry Piモデルで動作するはずです。
 
-USPi comes with an environment library (in the *env/* subdirectory) which provides all required functions to get USPi running. Furthermore there are some sample programs (in the *sample/* subdirectory) which demonstrate the use of USPi and which rely on the environment library. If you provide your own application and environment both are not needed.
+USPiには環境ライブラリ（*env/*サブディレクトリ）が付属しており、USPiを動作させる
+ために必要なすべての関数が提供されています。さらに、環境ライブラリを使用するUSPiの
+使用方法を示すサンプルプログラム（*sample/*サブディレクトリ）も用意されています。
+これらは自分でアプリケーションと環境を用意すれば必要ありません。
 
-Please note that this USB library was developed in a hobby project. There are known issues with it (e.g. no dynamic attachments, no error recovery, limited split support). For me it works well but that need not be the case with any device and in any situation. Also the focus for development was function not performance.
+このUSBライブラリは趣味のプロジェクトで開発されたものであることに注意してください。
+ダイナミックアタッチメントがない、エラーリカバリーがない、スプリットサポートが
+限定的であるなどの既知の問題があります。私の環境では問題なく動作していますが、
+必ずしもすべてのデバイス、すべての状況でうまくいくとは限りません。また、開発は
+パフォーマンスではなく機能に焦点を当てています。
 
-USPi was "mechanically" ported from the Circle USB library which is written in C++. That's why the source code may look a little bit strange. But it was faster to do so.
+USPiは、C++で書かれたCircle USB libraryを「機械的に」移植したものです。そのため
+ソースコードが少し変に見えるかもしれません。でも、そのほうが早かったんです。
 
-Directories
------------
+ディレクトリ
+----------------
 
-* include: USPi header files
-* lib: USPi source code
-* sample: Some sample programs
-* env: The environment used by the sample programs (not needed by the USPi library itself)
-* doc: Additional documentation files
+* include: USPiヘッダーファイル
+* lib: USPiソースコード
+* sample: サンプルプログラム
+* env: サンプルプログラムで使用される環境（USPiライブラリ自体には不要）
+* doc: ドキュメントファイル
 
-Interface
----------
+インタフェース
+---------------
 
-The USPi library provides functions to be used by the bare metal environment to access USB devices. There are eight groups of functions which are declared in *include/uspi.h*:
+USPiライブラリはベアメタル環境からUSBデバイスにアクセスするための関数を提供します。
+8つの関数グループがあり、*include/uspi.h*で宣言されています。
 
-* USPi initialization
-* Keyboard
-* Mouse
-* GamePad/Joystick
-* USB Mass storage device
-* Ethernet controller
-* MIDI (input only)
-* USB device information
+* USPiの初期化
+* キーボード
+* マウス
+* ゲームパッド/ジョイスティック
+* USB大容量格納装置
+* Ethernetコントローラー
+* MIDI (入力のみ)
+* USBデバイス情報
 
-The bare metal environment has to provide some functions to the USPi library which are declared in *include/uspios.h*. There are the six groups of functions:
+ベアメタル環境では*include/uspios.h*で宣言されているいくつかの関数をUSPiライブラリに
+提供する必要があります。この関数は6つのグループに分かれています。
 
-* Memory allocation
-* Timer
-* Interrupt handling
-* Property tags
-* Logging
-* Debug support
+**訳注**: `env/lib/uspibind.c`で実装されている。envが使用できないaarch64ではこれらの
+関数を独自に実装する必要がある。
 
-Configuration
+* メモリアロケーション
+* タイマー
+* 割り込み処理
+* プロパティタグ（MBOX処理）
+* ログ出力
+* デバッグサポート
+
+構成
 -------------
 
-Before you build the USPi library you have to configure it to meet your system configuration in the file *include/uspios.h* (top section).
+USPiライブラリをビルドする前に *include/uspios.h* ファイル（のトップセクション）で
+システム構成に合うように設定する必要があります。
 
-Another option (NDEBUG) can be defined in Rules.mk to build the release version. In the test phase it is better to use the debug version which contains many additional checks.
+もう一つのオプション(NDEBUG)はRules.mkで定義して、リリースバージョンをビルドすることが
+できます。テスト段階では多くのチェックを含むデバッグバージョンを使用する方がよいでしょう。
 
-Building
+ビルド
 --------
 
-> For AArch64 support go to the end of this file.
+> AArch64のサポートについてはこのファイルの最後を参照してください.
 
-Building is normally done on PC Linux. If building for the Raspberry Pi 1 you need a [toolchain](http://elinux.org/Rpi_Software#ARM) for the ARM1176JZF core. For Raspberry Pi 2/3 you need a toolchain with Cortex-A7/-A53 support. A toolchain, which works for all of these, can be downloaded [here](https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads). USPi has been tested with the version *7-2018-q2-update* from this website. You can also build USPi on the Raspberry Pi itself on Raspbian.
+ビルドは通常PC Linux上で行います。Raspberry Pi 1用にビルドする場合は、ARM1176JZFコア用の[ツールチェーン](http://elinux.org/Rpi_Software#ARM)が必要です。Raspberry Pi 2/3の場合は、Cortex-A7/-A53をサポートするツールチェーンが必要です。これら全てに対応するツールチェーンは[ここ](https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads)からダウンロードできます。USPiはこのウェブサイトのバージョン*7-2018-q2-update* でテストされています。Raspbian上のRaspberry Pi自体でもUSPiをビルドすることができます。
 
-First edit the file *Rules.mk* and set the Raspberry Pi version (*RASPPI*, 1, 2 or 3) and the *PREFIX* of your toolchain commands. Alternatively you can create a *Config.mk* file (which is ignored by git) and set the Raspberry Pi version and the *PREFIX* variable to the prefix of your compiler like this (don't forget the dash at the end):
+まず *Rules.mk* ファイルを編集し、Raspberry Pi のバージョン (*RASPPI*、1、2、3) とツールチェーンコマンドの *PREFIX* を設定します。あるいは、*Config.mk*ファイル（gitでは無視されます）を作成し、Raspberry Piのバージョンと*PREFIX*変数にコンパイラの接頭辞を次のように設定します（最後のダッシュを忘れないでください）。
 
-`RASPPI = 1`  
-`PREFIX = arm-none-eabi-`
+	RASPPI = 1
+	PREFIX = arm-none-eabi-
 
-Then go to the lib/ directory of USPi and do:
+次に、USPiのlib/ディレクトリで以下を実行してください。
 
-`make clean`  
-`make`
+	make clean
+	make
 
-The ready build *libuspi.a* file should be in the lib/ directory.
+*libuspi.a* ファイルがビルドされて lib/ ディレクトリにあるはずです。
 
-Using
------
-
-Add the USPi include/ directory to the include path in your Makefile and specify the *libuspi.a* library to *ld*. Include the file *uspi.h* where you want to access USPi functions.
-
-Samples
+使用法
 -------
 
-The sample programs in the *sample/* subdirectory and all required libraries can be build from USPi root by:
+Makefile のincludeパスに USPi include/ ディレクトリを追加し、 *libuspi.a* ライブラリを *ld* に
+指定してください。USPi関数にアクセスしたいところでファイル*uspi.h*をインクルードしてください。
 
-`./makeall clean`  
-`./makeall`
+サンプル
+--------
 
-The ready build *kernel.img* image file is in the same directory where its source code is. Copy it on a SD(HC) card along with the firmware files *bootcode.bin*, *fixup.dat* and *start.elf* which can be get [here](https://github.com/raspberrypi/firmware/tree/master/boot). Put the SD(HC) card into your Raspberry Pi and start it.
+*sample/* サブディレクトリにあるサンプルプログラムと必要なライブラリは、USPiルートで次を実行する
+ことでビルドできます。
+
+
+	./makeall clean
+	./makeall
+
+
+*kernel.img*イメージファイルはソースコードと同じディレクトリにあります。これをファームウェアファイル
+*bootcode.bin*, *fixup.dat*, *start.elf* （これらは[ここ](https://github.com/raspberrypi/firmware/tree/master/boot)から取得できます）と共にSD(HC)カードにコピーしてください。そして、SD(HC)カードをRaspberry 
+Piに入れて起動してください。
 
 AArch64
 -------
 
-The USPi library can be built so that it can be used in an AArch64 (64-bit) environment. You have to define the following in the file *Rules.mk* or *Config.mk* before build to do this:
+USPiライブラリは、AArch64（64ビット）環境で使用できるようにビルドすることもできます。
+そのためにはビルド前に*Rules.mk*か*Config.mk*で次の定義をしておく必要があります。
 
 	AARCH64 = 1
 
-The AArch64 support does not come with an environment library. Therefore it can be used only together with your own provided OS environment. The sample programs in the *sample/* subdirectory cannot be built out-of-the-box.
+AArch64のサポートには環境ライブラリは対応していません。そのため、自身で用意した
+OS環境と組み合わせて使用することしかできません。*sample/* サブディレクトリにある
+サンプルプログラムはそのままではビルドできません。
 
-To build the USPi library do the following:
+USPiライブラリをビルドするには次のようにします。
 
 	cd lib
 	make clean
 	make
 
-You should add `-DAARCH64=1` to the compiler options in your OS environment when using the USPi library in AArch64 mode there.
+USPiライブラリをAArch64モードで使用する場合は使用するOS環境のコンパイラオプションに `-DAARCH64=1` を追加する必要があります。

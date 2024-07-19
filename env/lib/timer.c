@@ -3,7 +3,7 @@
 //
 // USPi - An USB driver for Raspberry Pi written in C
 // Copyright (C) 2014-2015  R. Stange <rsta2@o2online.de>
-// 
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -74,7 +74,7 @@ boolean TimerInitialize (TTimer *pThis)
 	write32 (ARM_SYSTIMER_CLO, -(30 * CLOCKHZ));	// timer wraps soon, to check for problems
 
 	write32 (ARM_SYSTIMER_C3, read32 (ARM_SYSTIMER_CLO) + CLOCKHZ / HZ);
-	
+
 	TimerTuneMsDelay (pThis);
 
 	DataMemBarrier ();
@@ -244,6 +244,8 @@ void TimerSimpleusDelay (unsigned nMicroSeconds)
 	}
 }
 
+/// @brief ハンドラの登録のあるタイマーを調べて対象時間が経過していればハンドラを実行
+/// @param pThis
 void TimerPollKernelTimers (TTimer *pThis)
 {
 	assert (pThis != 0);
@@ -269,6 +271,7 @@ void TimerPollKernelTimers (TTimer *pThis)
 	LeaveCritical ();
 }
 
+
 void TimerInterruptHandler (void *pParam)
 {
 	TTimer *pThis = (TTimer *) pParam;
@@ -277,7 +280,7 @@ void TimerInterruptHandler (void *pParam)
 	DataMemBarrier ();
 
 	assert (read32 (ARM_SYSTIMER_CS) & (1 << 3));
-	
+
 	u32 nCompare = read32 (ARM_SYSTIMER_C3) + CLOCKHZ / HZ;
 	write32 (ARM_SYSTIMER_C3, nCompare);
 	if (nCompare < read32 (ARM_SYSTIMER_CLO))			// time may drift

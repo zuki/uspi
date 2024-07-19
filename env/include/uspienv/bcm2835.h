@@ -135,7 +135,7 @@
 #define ARM_TIMER_CNTR		(ARM_TIMER_BASE + 0x420)
 
 //
-// Mailbox
+// メールボックス
 //
 #define MAILBOX_BASE		(ARM_IO_BASE + 0xB880)
 
@@ -146,9 +146,9 @@
 #define MAILBOX1_STATUS 	(MAILBOX_BASE + 0x38)
 	#define MAILBOX_STATUS_FULL	0x80000000
 
-#define MAILBOX_CHANNEL_PM	0			// power management
-#define MAILBOX_CHANNEL_FB 	1			// frame buffer
-#define BCM_MAILBOX_PROP_OUT	8			// property tags (ARM to VC)
+#define MAILBOX_CHANNEL_PM	0	// 電源管理
+#define MAILBOX_CHANNEL_FB 	1	// フレームバッファ
+#define BCM_MAILBOX_PROP_OUT	8	// 属性タグ (ARM to VC)
 
 //
 // Pulse Width Modulator

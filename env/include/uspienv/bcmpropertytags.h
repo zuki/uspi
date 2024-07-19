@@ -17,6 +17,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // 
+// メールボックス属性インタフェースを使用するための関数
+// 
 #ifndef _bcmpropertytags_h
 #define _bcmpropertytags_h
 
@@ -45,14 +47,15 @@ extern "C" {
 
 typedef struct TPropertyTag
 {
-	u32	nTagId;
-	u32	nValueBufSize;			// bytes, multiple of 4
-	u32	nValueLength;			// bytes
+	u32	nTagId;			// タグ識別子
+	u32	nValueBufSize;		// バイっファサイズ、4の倍数
+	u32	nValueLength;		// リクエスト/レスポンス
 	#define VALUE_LENGTH_RESPONSE	(1 << 31)
-	//u8	ValueBuffer[0];			// must be padded to be 4 byte aligned
+	//u8	ValueBuffer[0];		// 4バイトアラインに詰める
 }
 TPropertyTag;
 
+// シンプル属性タグ(リクエスト超0, レスポンス長4)
 typedef struct TPropertyTagSimple
 {
 	TPropertyTag	Tag;
@@ -60,6 +63,7 @@ typedef struct TPropertyTagSimple
 }
 TPropertyTagSimple;
 
+// MACアドレス取得用の属性タグ
 typedef struct TPropertyTagMACAddress
 {
 	TPropertyTag	Tag;
@@ -68,6 +72,7 @@ typedef struct TPropertyTagMACAddress
 }
 TPropertyTagMACAddress;
 
+// ボードシリアル取得用の属性タグ
 typedef struct TPropertyTagSerial
 {
 	TPropertyTag	Tag;
@@ -75,6 +80,7 @@ typedef struct TPropertyTagSerial
 }
 TPropertyTagSerial;
 
+// ARMメモリ取得用の属性タグ
 typedef struct TPropertyTagMemory
 {
 	TPropertyTag	Tag;
@@ -83,6 +89,7 @@ typedef struct TPropertyTagMemory
 }
 TPropertyTagMemory;
 
+// 電源状態取得用の属性タグ
 typedef struct TPropertyTagPowerState
 {
 	TPropertyTag	Tag;
@@ -97,6 +104,7 @@ typedef struct TPropertyTagPowerState
 }
 TPropertyTagPowerState;
 
+// クロックレート取得用の属性タグ
 typedef struct TPropertyTagClockRate
 {
 	TPropertyTag	Tag;
@@ -107,6 +115,7 @@ typedef struct TPropertyTagClockRate
 }
 TPropertyTagClockRate;
 
+// 温度取得用の属性タグ
 typedef struct TPropertyTemperature
 {
 	TPropertyTag	Tag;
@@ -116,6 +125,7 @@ typedef struct TPropertyTemperature
 }
 TPropertyTemperature;
 
+// EDIDブロック取得用の属性タグ
 typedef struct TPropertyTagEDIDBlock
 {
 	TPropertyTag	Tag;
@@ -127,6 +137,7 @@ typedef struct TPropertyTagEDIDBlock
 }
 TPropertyTagEDIDBlock;
 
+// ディスプレイ幅/高さの取得用の属性タグ
 typedef struct TPropertyTagDisplayDimensions
 {
 	TPropertyTag	Tag;
@@ -135,6 +146,7 @@ typedef struct TPropertyTagDisplayDimensions
 }
 TPropertyTagDisplayDimensions;
 
+// コマンドライン取得用の属性タグ
 typedef struct TPropertyTagCommandLine
 {
 	TPropertyTag	Tag;
@@ -152,10 +164,10 @@ void BcmPropertyTags (TBcmPropertyTags *pThis);
 void _BcmPropertyTags (TBcmPropertyTags *pThis);
 
 boolean BcmPropertyTagsGetTag (TBcmPropertyTags *pThis,
-			       u32	  nTagId,			// tag identifier
-			       void	 *pTag,				// pointer to tag struct
-			       unsigned  nTagSize,			// size of tag struct
-			       unsigned  nRequestParmSize /* = 0 */);	// number of parameter bytes
+			       u32	  nTagId,	// タグ識別子
+			       void	 *pTag,		// タグ構造体へのポインタ
+			       unsigned  nTagSize,	// タグ構造体サイズ
+			       unsigned  nRequestParmSize /* = 0 */);	//パラメタのバイト数
 
 #ifdef __cplusplus
 }

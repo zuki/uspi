@@ -27,12 +27,13 @@
 extern "C" {
 #endif
 
+// メモリシステム構造体
 typedef struct TMemorySystem
 {
-	boolean m_bEnableMMU;
-	u32 m_nMemSize;
+	boolean m_bEnableMMU;		// MMUが有効
+	u32 m_nMemSize;			// メモリサイズ
 
-	TPageTable *m_pPageTable;
+	TPageTable *m_pPageTable;	// ページテーブル
 }
 TMemorySystem;
 

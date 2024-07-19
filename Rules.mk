@@ -3,7 +3,7 @@
 #
 # USPi - An USB driver for Raspberry Pi written in C
 # Copyright (C) 2014-2020  R. Stange <rsta2@o2online.de>
-# 
+#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -24,14 +24,14 @@ endif
 
 -include $(USPIHOME)/Config.mk
 
-AARCH64	?= 0
+AARCH64	= 1
 
 ifeq ($(strip $(AARCH64)),0)
 RASPPI	?= 1
 PREFIX	?= arm-none-eabi-
 else
 RASPPI	= 3
-PREFIX	?= aarch64-linux-gnu-
+PREFIX	?= aarch64-elf-
 endif
 
 CC	= $(PREFIX)gcc

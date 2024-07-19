@@ -34,12 +34,12 @@ extern "C" {
 
 typedef struct TUSPiEnv
 {
-	TMemorySystem		m_Memory;
-	TScreenDevice	 	m_Screen;
-	TLogger		 	m_Logger;
-	TExceptionHandler	m_ExceptionHandler;
-	TInterruptSystem	m_Interrupt;
-	TTimer			m_Timer;
+	TMemorySystem		m_Memory;		// メモリシステム
+	TScreenDevice	 	m_Screen;		// スクリーンデバイス
+	TLogger		 	m_Logger;		// ロガー
+	TExceptionHandler	m_ExceptionHandler;	// 例外ハンドラ
+	TInterruptSystem	m_Interrupt;		// 割り込みシステム
+	TTimer			m_Timer;		// タイマー
 }
 TUSPiEnv;
 

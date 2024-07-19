@@ -26,9 +26,10 @@
 extern "C" {
 #endif
 
+// メールボックス構造体
 typedef struct TBcmMailBox
 {
-	unsigned m_nChannel;
+	unsigned m_nChannel;	// チャネル番号
 }
 TBcmMailBox;
 

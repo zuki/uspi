@@ -20,8 +20,10 @@
 #include <uspienv.h>
 #include <uspienv/sysconfig.h>
 
+// ENV変数
 static TUSPiEnv s_Env;
 
+// Envを初期化する
 int USPiEnvInitialize (void)
 {
 #ifdef ARM_DISABLE_MMU

@@ -42,6 +42,7 @@
 
 void MemorySystemEnableMMU (TMemorySystem *pThis);
 
+// メモリシステムを初期化する
 void MemorySystem (TMemorySystem *pThis, boolean bEnableMMU)
 {
 	assert (pThis != 0);

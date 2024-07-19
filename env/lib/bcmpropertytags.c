@@ -24,9 +24,10 @@
 #include <uspienv/sysconfig.h>
 #include <uspienv/assert.h>
 
+// メールボックス属性バッファ構造体
 typedef struct TPropertyBuffer
 {
-	u32	nBufferSize;			// bytes
+	u32	nBufferSize;		// バイト単位
 	u32	nCode;
 	#define CODE_REQUEST		0x00000000
 	#define CODE_RESPONSE_SUCCESS	0x80000000
@@ -50,6 +51,7 @@ void _BcmPropertyTags (TBcmPropertyTags *pThis)
 	_BcmMailBox (&pThis->m_MailBox);
 }
 
+// メールボックスによる属性の取得
 boolean BcmPropertyTagsGetTag (TBcmPropertyTags *pThis, u32 nTagId,
 			       void *pTag, unsigned nTagSize, unsigned  nRequestParmSize)
 {
