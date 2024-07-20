@@ -30,6 +30,7 @@
 #include <uspi/usbmidi.h>
 #include <uspi/smsc951x.h>
 #include <uspi/lan7800.h>
+#include <uspi/usbcdcethernet.h>
 
 TUSBFunction *USBDeviceFactoryGetDevice (TUSBFunction *pParent, TString *pName)
 {
@@ -81,13 +82,19 @@ TUSBFunction *USBDeviceFactoryGetDevice (TUSBFunction *pParent, TString *pName)
 		LAN7800Device (pDevice, pParent);
 		pResult = (TUSBFunction *) pDevice;
 	}
-    else if (StringCompare (pName, "int3-0-0") == 0)
-    {
-        TUSBGamePadDevice *pDevice = (TUSBGamePadDevice *) malloc (sizeof (TUSBGamePadDevice));
-        assert (pDevice != 0);
-        USBGamePadDevice (pDevice, pParent);
-        pResult = (TUSBFunction *) pDevice;
-    }
+	else if (StringCompare (pName, "int2-6-0") == 0) 
+	{
+		TUSBCDCEthernetDevice *pDevice = (TUSBCDCEthernetDevice *) malloc(sizeof(TUSBCDCEthernetDevice));
+		USBCDCEthernetDevice(pDevice, pParent);
+		pResult = (TUSBFunction *) pDevice;
+	}
+	else if (StringCompare (pName, "int3-0-0") == 0)
+	{
+		TUSBGamePadDevice *pDevice = (TUSBGamePadDevice *) malloc (sizeof (TUSBGamePadDevice));
+		assert (pDevice != 0);
+		USBGamePadDevice (pDevice, pParent);
+		pResult = (TUSBFunction *) pDevice;
+	}
 	else if (StringCompare (pName, "int1-3-0") == 0)
 	{
 		TUSBMIDIDevice *pDevice = (TUSBMIDIDevice *) malloc (sizeof (TUSBMIDIDevice));

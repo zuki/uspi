@@ -20,7 +20,7 @@
 
 OBJS	= uspilibrary.o \
 	  dwhcidevice.o dwhciregister.o dwhcixferstagedata.o \
-	  usbconfigparser.o usbdevice.o usbdevicefactory.o usbendpoint.o usbrequest.o usbstandardhub.o \
+	  usbconfigparser.o usbdevice.o usbdevicefactory.o usbendpoint.o usbrequest.o usbstandardhub.o usbcdcethernet.o \
 	  devicenameservice.o macaddress.o usbfunction.o smsc951x.o lan7800.o string.o util.o \
 	  usbmassdevice.o \
 	  dwhciframeschednper.o dwhciframeschedper.o keymap.o usbkeyboard.o \
