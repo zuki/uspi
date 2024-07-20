@@ -254,7 +254,7 @@ void LAN7800Device (TLAN7800Device *pThis, TUSBFunction *pFunction)
 	pThis->m_pEndpointBulkOut = 0;
 	pThis->m_pTxBuffer = 0;
 
-	pThis->m_pTxBuffer = malloc (FRAME_BUFFER_SIZE);
+	pThis->m_pTxBuffer = malloc (USPI_FRAME_BUFFER_SIZE);
 	assert (pThis->m_pTxBuffer != 0);
 }
 
@@ -484,7 +484,7 @@ boolean LAN7800DeviceSendFrame (TLAN7800Device *pThis, const void *pBuffer, unsi
 {
 	assert (pThis != 0);
 
-	if (nLength > FRAME_BUFFER_SIZE-TX_HEADER_SIZE)
+	if (nLength > USPI_FRAME_BUFFER_SIZE-TX_HEADER_SIZE)
 	{
 		return FALSE;
 	}
@@ -508,7 +508,7 @@ boolean LAN7800DeviceReceiveFrame (TLAN7800Device *pThis, void *pBuffer, unsigne
 	assert (pThis->m_pEndpointBulkIn != 0);
 	assert (pBuffer != 0);
 	TUSBRequest URB;
-	USBRequest (&URB, pThis->m_pEndpointBulkIn, pBuffer, FRAME_BUFFER_SIZE, 0);
+	USBRequest (&URB, pThis->m_pEndpointBulkIn, pBuffer, USPI_FRAME_BUFFER_SIZE, 0);
 
 	if (!DWHCIDeviceSubmitBlockingRequest (USBFunctionGetHost (&pThis->m_USBFunction), &URB))
 	{

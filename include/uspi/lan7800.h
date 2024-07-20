@@ -25,8 +25,7 @@
 #include <uspi/usbrequest.h>
 #include <uspi/macaddress.h>
 #include <uspi/types.h>
-
-#define FRAME_BUFFER_SIZE	1600
+#include <uspi.h>
 
 typedef struct TLAN7800Device
 {
@@ -50,7 +49,7 @@ TMACAddress *LAN7800DeviceGetMACAddress (TLAN7800Device *pThis);
 
 boolean LAN7800DeviceSendFrame (TLAN7800Device *pThis, const void *pBuffer, unsigned nLength);
 
-// pBuffer must have size FRAME_BUFFER_SIZE
+// pBuffer must have size USPI_FRAME_BUFFER_SIZE
 boolean LAN7800DeviceReceiveFrame (TLAN7800Device *pThis, void *pBuffer, unsigned *pResultLength);
 
 // returns TRUE if PHY link is up
